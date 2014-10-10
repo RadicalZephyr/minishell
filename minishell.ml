@@ -1,10 +1,10 @@
 open Core.Std
-open Unix
 
 let arg_parse line =
   [line]
 
 let process_line line =
+  let open Unix in
   let args = arg_parse line in
   match fork () with
   | `In_the_child   ->
@@ -18,9 +18,9 @@ let process_line line =
         Out_channel.output_string Out_channel.stderr (error_message err)
 
 let rec prompt () =
-  Out_channel.output_string Out_channel.stderr "% ";
-  Out_channel.flush Out_channel.stderr;
-  match (In_channel.input_line In_channel.stdin) with
+  Out_channel.output_string stderr "% ";
+  Out_channel.flush stderr;
+  match (In_channel.input_line stdin) with
   | None -> ()
   | Some line ->
      process_line line;
