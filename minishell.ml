@@ -1,10 +1,14 @@
 open Core.Std
 open Unix
 
+let arg_parse line =
+  [line]
+
 let process_line line =
+  let args = arg_parse line in
   match fork () with
   | `In_the_child   ->
-     never_returns (exec ~prog:line ~args:[line] ~use_path:true ())
+     never_returns (exec ~prog:line ~args:args ~use_path:true ())
   | `In_the_parent cpid ->
      try
        let _ = waitpid cpid in
