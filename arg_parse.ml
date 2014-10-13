@@ -16,28 +16,28 @@ let process line =
     else find_quote (i+1)
   in
 
-  let rec split accum counter start i =
+  let rec split accum buffer start i =
     if i >= String.length line then
 
       if start = i then
-        (counter, accum)
+        accum
       else
-        (counter+1, String.sub line start (i-start) :: accum)
+        String.sub line start (i-start) :: accum
 
     else
       match line.[i] with
       | ' ' ->
          let j = skip_blanks i in
-         split (String.sub line start (i-start) :: accum) (counter+1) j j
+         split (String.sub line start (i-start) :: accum) buffer j j
 
       | '"' ->
          let j = find_quote i+1 in
-         split accum counter start (j+1)
+         split accum buffer start (j+1)
 
       | _ ->
-         split accum counter start (i+1)
+         split accum buffer start (i+1)
   in
 
   let j = skip_blanks 0 in
-  let (arg_count, args) = split [] 0 j j in
-  (arg_count, List.rev args)
+  let args = split [] 0 j j in
+  ((List.length args), List.rev args)
