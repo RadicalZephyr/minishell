@@ -8,6 +8,14 @@ let process line =
     else i
   in
 
+  let rec find_quote i =
+    if line.[i] = '"'
+    then i
+    else if i < String.length line && line.[i] <> '"'
+    then failwith "No ending quote found."
+    else find_quote (i+1)
+  in
+
   let rec split accum counter start i =
     if i >= String.length line then
 
@@ -21,6 +29,11 @@ let process line =
       | ' ' ->
          let j = skip_blanks i in
          split (String.sub line start (i-start) :: accum) (counter+1) j j
+
+      | '"' ->
+         let j = find_quote i+1 in
+         split accum counter (j+1) (j+1)
+
       | _ ->
          split accum counter start (i+1)
   in
