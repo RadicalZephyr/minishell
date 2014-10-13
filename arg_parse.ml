@@ -16,13 +16,13 @@ let process line =
       else
         (counter+1, String.sub line start (i-start) :: accum)
 
-    else if line.[i] = ' ' then
-
-      let j = skip_blanks i in
-      split (String.sub line start (i-start) :: accum) (counter+1) j j
-
     else
-      split accum counter start (i+1)
+      match line.[i] with
+      | ' ' ->
+         let j = skip_blanks i in
+         split (String.sub line start (i-start) :: accum) (counter+1) j j
+      | _ ->
+         split accum counter start (i+1)
   in
 
   let j = skip_blanks 0 in
