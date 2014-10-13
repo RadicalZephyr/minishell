@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-../../minishell.byte > minishell.out <<EOF
+source ../.defaults
+
+$BINARY > minishell.out <<EOF
 echo
 echo Hello
  echo Hi

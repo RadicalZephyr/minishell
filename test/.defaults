@@ -1,0 +1,3 @@
+# Default setups for tests
+
+BINARY=${BINARY:-../../minishell.byte}
