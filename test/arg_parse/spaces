@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+../../minishell.byte > minishell.out <<EOF
+echo
+echo Hello
+ echo Hi
+echo How are you?  
+echo    I'm just fine
+      echo   and   I don't     care about     spaces!!!!   
+EOF
+
+diff -u minishell.out .spaces.diff
+
+RET=$?
+
+rm minishell.out
+
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
