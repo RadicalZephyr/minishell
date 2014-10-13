@@ -1,5 +1,12 @@
 open Core.Std
 
+type t =
+  { rev_arg_list: bytes list;
+    current_arg : Buffer.t;
+    start       : int;
+    i           : int;
+  }
+
 let process line =
 
   let rec skip_blanks i =
