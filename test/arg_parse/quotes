@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+../../minishell.byte > minishell.out <<EOF
+echo "Stuff happens here"
+echo harder" stuff and things"
+echo " things that might not seem "hard
+EOF
+
+diff -u minishell.out .quotes.diff
+
+RET=$?
+
+rm minishell.out
+
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
