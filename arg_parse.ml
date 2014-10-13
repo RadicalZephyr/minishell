@@ -32,7 +32,7 @@ let process line =
 
       | '"' ->
          let j = find_quote i+1 in
-         split accum counter (j+1) (j+1)
+         split accum counter start (j+1)
 
       | _ ->
          split accum counter start (i+1)
