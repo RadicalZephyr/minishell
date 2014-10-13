@@ -10,13 +10,17 @@ let process line =
 
   let rec split accum start i =
     if i >= String.length line then
+
       if start = i then
         accum
       else
         String.sub line start (i-start) :: accum
+
     else if line.[i] = ' ' then
+
       let j = skip_blanks i in
       split (String.sub line start (i-start) :: accum) j j
+
     else
       split accum start (i+1)
   in

@@ -5,9 +5,11 @@ let process_line line =
   match Arg_parse.process line with
   | [] -> failwith ""
   | prog :: _ as args ->
+
      match fork () with
      | `In_the_child   ->
         never_returns (exec ~prog ~args ~use_path:true ())
+
      | `In_the_parent cpid ->
         try
           let _ = waitpid cpid in
@@ -19,6 +21,7 @@ let process_line line =
 let rec prompt () =
   Out_channel.output_string stderr "% ";
   Out_channel.flush stderr;
+
   match (In_channel.input_line stdin) with
   | None -> ()
   | Some line ->
