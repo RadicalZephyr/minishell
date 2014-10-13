@@ -8,22 +8,23 @@ let process line =
     else i
   in
 
-  let rec split accum start i =
+  let rec split accum counter start i =
     if i >= String.length line then
 
       if start = i then
-        accum
+        (counter, accum)
       else
-        String.sub line start (i-start) :: accum
+        (counter+1, String.sub line start (i-start) :: accum)
 
     else if line.[i] = ' ' then
 
       let j = skip_blanks i in
-      split (String.sub line start (i-start) :: accum) j j
+      split (String.sub line start (i-start) :: accum) (counter+1) j j
 
     else
-      split accum start (i+1)
+      split accum counter start (i+1)
   in
 
   let j = skip_blanks 0 in
-  List.rev (split [] j j)
+  let (arg_count, args) = split [] 0 j j in
+  (arg_count, List.rev args)

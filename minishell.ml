@@ -2,9 +2,10 @@ open Core.Std
 
 let process_line line =
   let open Unix in
-  match Arg_parse.process line with
+  let (_, args) = Arg_parse.process line in
+  match args with
   | [] -> failwith ""
-  | prog :: _ as args ->
+  | prog :: _ ->
 
      match fork () with
      | `In_the_child   ->
