@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+aecho
+aecho -n "thing"
+aecho stuff
+aecho a b c d e
+aecho -n a"  "b c d
+aecho last
+EOF
+
+MSH_RET=$?
+
+diff -u .aecho.diff minishell.out
+
+RET=$?
+
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
+
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
