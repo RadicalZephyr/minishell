@@ -36,15 +36,18 @@ let process line =
       match line.[i] with
       | ' ' ->
          let j = skip_blanks i in
+
          Buffer.add_substring buffer line start (i-start);
          split ((Buffer.contents buffer) :: accum) ((Buffer.create 10)) j j
 
       | '"' ->
-         let j = find_quote i+1 in
+         let j = find_quote (i+1) in
          (* Copy the arg up to the starting quote *)
-         Buffer.add_substring buffer line start (i-start-1);
+         Buffer.add_substring buffer line start (i-start);
+
          (* Copy the characters between the quotations *)
-         Buffer.add_substring buffer line (i+1) (j-start-1);
+         Buffer.add_substring buffer line (i+1) ((j-1)-i);
+
          (* ... and reset the start pointer to after both strings *)
          split accum buffer (j+1) (j+1)
 
