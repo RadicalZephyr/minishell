@@ -35,8 +35,10 @@ let process line =
 
   let rec split accum buffer start i =
     if i >= String.length line then begin
-          Buffer.add_substring buffer line start (i-start);
-          (Buffer.contents buffer) :: accum
+        Buffer.add_substring buffer line start (i-start);
+        let arg = Buffer.contents buffer in
+        if String.length arg = 0 then accum
+        else arg :: accum
       end
     else
       match line.[i] with
@@ -44,7 +46,7 @@ let process line =
          let j = skip_blanks i in
 
          Buffer.add_substring buffer line start (i-start);
-         split ((Buffer.contents buffer) :: accum) ((Buffer.create 10)) j j
+         split ((Buffer.contents buffer) :: accum) (Buffer.create 10) j j
 
       | '"' ->
          let j = find_quote (i+1) in
