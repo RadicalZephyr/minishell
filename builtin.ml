@@ -34,8 +34,8 @@ let try_all prog args channels =
     match args with
     | [] -> printf "\n"; 0
     | hd :: tl ->
-       let (hd::tl, terminal) = if hd = "-n" then (tl, "\n")
-                                else (args, "") in
+       let (hd::tl, terminal) = if hd = "-n" then (tl, "")
+                                else (args, "\n") in
        fprintf channels.out_ch "%s%s%s%!"
                hd (build_string (Buffer.create 15) tl) terminal;
        0
