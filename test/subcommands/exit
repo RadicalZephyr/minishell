@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+exit
+EOF
+
+if [ $? != 0 ]
+then
+    exit 1
+fi
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+exit 123
+EOF
+
+if [ $? != 123 ]
+then
+    exit 1
+fi
+
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
