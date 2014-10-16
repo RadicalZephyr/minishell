@@ -20,16 +20,13 @@ let process line =
   in
 
   let rec skip_blanks i =
-    if i < String.length line && line.[i] = ' '
-    then skip_blanks (i+1)
+    if i < String.length line && line.[i] = ' ' then skip_blanks (i+1)
     else i
   in
 
   let rec find_quote i =
-    if i > String.length line
-    then failwith "No ending quote found."
-    else if line.[i] = '"'
-    then i
+    if i > String.length line then failwith "No ending quote found."
+    else if line.[i] = '"' then i
     else find_quote (i+1)
   in
 
