@@ -6,18 +6,20 @@ let process_line line =
   match args with
   | [] -> () (* silently ignore empty lines *)
   | prog :: _ ->
+     match Builtin.try_all prog args with
+     | Some ret -> ()
+     | None ->
+        match fork () with
+        | `In_the_child   ->
+           never_returns (exec ~prog ~args ~use_path:true ())
 
-     match fork () with
-     | `In_the_child   ->
-        never_returns (exec ~prog ~args ~use_path:true ())
-
-     | `In_the_parent cpid ->
-        try
-          let _ = waitpid cpid in
-          ()
-        with
-        | Unix_error (err, _, _) ->
-           Out_channel.output_string Out_channel.stderr (error_message err)
+        | `In_the_parent cpid ->
+           try
+             let _ = waitpid cpid in
+             ()
+           with
+           | Unix_error (err, _, _) ->
+              Out_channel.output_string Out_channel.stderr (error_message err)
 
 let rec prompt () =
   Out_channel.output_string stderr "% ";
