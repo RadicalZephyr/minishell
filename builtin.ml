@@ -12,11 +12,25 @@ type builtin_rec = {
 
 let try_all prog args =
   let exit_fn args =
-    1
+    match args with
+    | [] -> exit 0
+    | hd :: _ -> exit (int_of_string hd)
   in
 
   let aecho args =
-    1
+    let rec build_string accum args =
+      match args with
+      | [] -> Buffer.contents accum
+      | hd :: tl ->
+         Buffer.add_char accum ' ';
+         Buffer.add_string accum hd;
+         build_string accum tl
+    in
+    match args with
+    | [] -> printf "\n"; 0
+    | hd :: tl ->
+       let terminal = if hd = "-n" then "\n" else "" in
+       printf "%s%s%s" hd (build_string (Buffer.create 15) tl) terminal; 0
   in
 
   let builtins = [{ name = "exit";  fn = exit_fn};
