@@ -11,11 +11,18 @@ echo    I'm just fine
       echo   and   I don't     care about     spaces!!!!   
 EOF
 
+MSH_RET=$?
+
 diff -u minishell.out .spaces.diff
 
 RET=$?
 
 rm minishell.out
+
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
 
 exit $RET
 
