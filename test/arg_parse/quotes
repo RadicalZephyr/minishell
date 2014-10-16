@@ -2,7 +2,7 @@
 
 source ../.defaults
 
-$BINARY > minishell.out <<EOF
+$BINARY > minishell.out <<EOF 2> /dev/null
 echo "Stuff happens here"
 echo harder" stuff and things"
 echo "other stuff and things"  
