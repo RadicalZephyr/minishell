@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+EOF
+
+MSH_RET=$?
+
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
