@@ -12,10 +12,10 @@ let process line =
   let print_info marker accum buffer start i j =
     match accum with
     | [] ->
-       printf "[%s] buf: '%s' start: %d i: %d j:%d\n"
+       printf "[%s] buf: '%s' start: %d i: %d j:%d\n%!"
               marker (Buffer.contents buffer) start i j
     | hd :: _ ->
-       printf "[%s] hd: '%s' buf: '%s' start: %d i: %d j:%d\n"
+       printf "[%s] hd: '%s' buf: '%s' start: %d i: %d j:%d\n%!"
               marker hd (Buffer.contents buffer) start i j
   in
 
