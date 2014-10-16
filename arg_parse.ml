@@ -1,12 +1,5 @@
 open Core.Std
 
-type t =
-  { rev_arg_list: bytes list;
-    current_arg : Buffer.t;
-    start       : int;
-    i           : int;
-  }
-
 let process line =
 
   let print_info marker accum buffer start i j =
