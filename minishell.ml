@@ -4,7 +4,7 @@ let process_line line =
   let open Unix in
   let (_, args) = Arg_parse.process line in
   match args with
-  | [] -> failwith ""
+  | [] -> () (* silently ignore empty lines *)
   | prog :: _ ->
 
      match fork () with
