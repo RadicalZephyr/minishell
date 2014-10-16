@@ -5,7 +5,9 @@ source ../.defaults
 $BINARY > minishell.out <<EOF
 echo "Stuff happens here"
 echo harder" stuff and things"
+echo "other stuff and things"  
 echo " things that might not seem "hard
+echo " and legitimately"hard seeming stuff   
 EOF
 
 diff -u minishell.out .quotes.diff
