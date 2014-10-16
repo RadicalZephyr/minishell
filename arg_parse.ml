@@ -54,4 +54,4 @@ let process line =
 
   let j = skip_blanks 0 in
   let args = split [] (Buffer.create 10) j j in
-  ((List.length args), List.rev args)
+  (List.length args, List.rev args)
