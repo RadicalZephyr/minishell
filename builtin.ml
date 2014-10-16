@@ -35,7 +35,7 @@ let try_all prog args channels =
     | [] -> printf "\n"; 0
     | hd :: tl ->
        let terminal = if hd = "-n" then "\n" else "" in
-       fprintf channels.out_ch "%s%s%s" hd (build_string (Buffer.create 15) tl) terminal; 0
+       fprintf channels.out_ch "%s%s%s%!" hd (build_string (Buffer.create 15) tl) terminal; 0
   in
 
   let builtins = [{ name = "exit";  fn = exit_fn};
