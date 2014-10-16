@@ -41,6 +41,9 @@ let try_all prog args channels =
   let builtins = [{ name = "exit";  fn = exit_fn};
                   { name = "aecho"; fn = aecho}]
   in
-  List.find_map builtins ~f:(fun ({name; fn}) ->
-                             if prog = name then Some (fn args)
-                             else None)
+  match args with
+  | [] -> assert false
+  | _ :: args ->
+     List.find_map builtins ~f:(fun ({name; fn}) ->
+                                if prog = name then Some (fn args)
+                                else None)
