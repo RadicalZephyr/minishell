@@ -9,8 +9,13 @@ type builtin_rec = {
     fn   : bytes list -> int;
   }
 
+type file_channels = {
+    in_ch :  in_channel;
+    out_ch : out_channel;
+    err_ch : out_channel;
+  }
 
-let try_all prog args =
+let try_all prog args channels =
   let exit_fn args =
     match args with
     | [] -> exit 0
@@ -30,7 +35,7 @@ let try_all prog args =
     | [] -> printf "\n"; 0
     | hd :: tl ->
        let terminal = if hd = "-n" then "\n" else "" in
-       printf "%s%s%s" hd (build_string (Buffer.create 15) tl) terminal; 0
+       fprintf channels.out_ch "%s%s%s" hd (build_string (Buffer.create 15) tl) terminal; 0
   in
 
   let builtins = [{ name = "exit";  fn = exit_fn};

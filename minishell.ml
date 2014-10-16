@@ -6,7 +6,9 @@ let process_line line =
   match args with
   | [] -> () (* silently ignore empty lines *)
   | prog :: _ ->
-     match Builtin.try_all prog args with
+     match Builtin.try_all prog args {in_ch  = Pervasives.stdin;
+                                      out_ch = Pervasives.stdout;
+                                      err_ch = Pervasives.stderr} with
      | Some ret -> ()
      | None ->
         match fork () with
