@@ -16,10 +16,10 @@ let process line =
   in
 
   let rec find_quote i =
-    if line.[i] = '"'
-    then i
-    else if i < String.length line && line.[i] <> '"'
+    if i > String.length line
     then failwith "No ending quote found."
+    else if line.[i] = '"'
+    then i
     else find_quote (i+1)
   in
 
