@@ -12,7 +12,7 @@ EOF
 
 MSH_RET=$?
 
-diff -u minishell.out .quotes.diff
+diff -u .quotes.diff minishell.out
 
 RET=$?
 

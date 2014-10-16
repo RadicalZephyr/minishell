@@ -13,7 +13,7 @@ EOF
 
 MSH_RET=$?
 
-diff -u minishell.out .spaces.diff
+diff -u .spaces.diff minishell.out
 
 RET=$?
 
