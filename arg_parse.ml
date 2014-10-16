@@ -24,14 +24,10 @@ let process line =
   in
 
   let rec split accum buffer start i =
-    if i >= String.length line then
-
-      if start = i then
-        accum
-      else begin
-        Buffer.add_substring buffer line start (i-start);
-        (Buffer.contents buffer) :: accum
-        end
+    if i >= String.length line then begin
+          Buffer.add_substring buffer line start (i-start);
+          (Buffer.contents buffer) :: accum
+      end
     else
       match line.[i] with
       | ' ' ->
