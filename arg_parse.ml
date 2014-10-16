@@ -28,23 +28,30 @@ let process line =
 
       if start = i then
         accum
-      else
-        String.sub line start (i-start) :: accum
-
+      else begin
+        Buffer.add_substring buffer line start (i-start);
+        (Buffer.contents buffer) :: accum
+        end
     else
       match line.[i] with
       | ' ' ->
          let j = skip_blanks i in
-         split (String.sub line start (i-start) :: accum) buffer j j
+         Buffer.add_substring buffer line start (i-start);
+         split ((Buffer.contents buffer) :: accum) ((Buffer.create 10)) j j
 
       | '"' ->
          let j = find_quote i+1 in
-         split accum buffer start (j+1)
+         (* Copy the arg up to the starting quote *)
+         Buffer.add_substring buffer line start (i-start-1);
+         (* Copy the characters between the quotations *)
+         Buffer.add_substring buffer line (i+1) (j-start-1);
+         (* ... and reset the start pointer to after both strings *)
+         split accum buffer (j+1) (j+1)
 
       | _ ->
          split accum buffer start (i+1)
   in
 
   let j = skip_blanks 0 in
-  let args = split [] 0 j j in
+  let args = split [] (Buffer.create 10) j j in
   ((List.length args), List.rev args)
