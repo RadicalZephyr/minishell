@@ -69,7 +69,7 @@ let process line =
 
            | Some (char, fn) ->
               let (endi, replacement) =
-                replace_with_substring_from_index_to_char fn (i+2) char in
+                replace_with_substring_from_index_to_char fn (i+1) char in
               append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
               let next = (endi+1) in
