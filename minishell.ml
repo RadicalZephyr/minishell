@@ -5,10 +5,10 @@ let process_line line =
   let (_, args) = Arg_parse.process line in
   match args with
   | [] -> () (* silently ignore empty lines *)
-  | prog :: _ ->
-     match Builtin.try_all prog args { in_ch = Pervasives.stdin;
-                                      out_ch = Pervasives.stdout;
-                                      err_ch = Pervasives.stderr} with
+  | prog :: just_args ->
+     match Builtin.try_all prog just_args { in_ch  = Pervasives.stdin;
+                                            out_ch = Pervasives.stdout;
+                                            err_ch = Pervasives.stderr} with
      | Some _ -> ()
      | None ->
         match fork () with

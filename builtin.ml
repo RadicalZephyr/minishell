@@ -76,9 +76,6 @@ let try_all prog args channels =
                   { name = "envunset"; fn = envunset};
                   { name = "cd"      ; fn = cd      }]
   in
-  match args with
-  | [] -> assert false
-  | _ :: args ->
-     List.find_map builtins ~f:(fun ({name; fn}) ->
-                                if prog = name then Some (fn args)
-                                else None)
+  List.find_map builtins ~f:(fun ({name; fn}) ->
+                             if prog = name then Some (fn args)
+                             else None)
