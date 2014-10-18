@@ -41,8 +41,29 @@ let try_all prog args channels =
        0
   in
 
-  let builtins = [{ name = "exit";  fn = exit_fn};
-                  { name = "aecho"; fn = aecho}]
+  let envset args =
+    match args with
+    (* zero or one arguments is an error *)
+    | [] | _ :: [] -> failwith "too few arguments"
+    | key :: data :: _ ->
+       Unix.putenv ~key ~data;
+       0
+  in
+
+  let envunset args =
+    match args with
+      (* zero arguments is an error *)
+    | [] -> failwith "too few arguments"
+    | name :: _ ->
+       Unix.unsetenv name;
+       0
+  in
+
+
+  let builtins = [{ name = "exit";     fn = exit_fn};
+                  { name = "aecho";    fn = aecho};
+                  { name = "envset";   fn = envset};
+                  { name = "envunset"; fn = envunset}]
   in
   match args with
   | [] -> assert false
