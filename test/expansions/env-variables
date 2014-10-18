@@ -3,14 +3,16 @@
 source ../.defaults
 
 export TEST_VAR="Hello things"
-export TRYING="echo"
+export TRYING="aecho"
 unset MISSING_VAR
 
-$BINARY > minishell.out 2> /dev/null <<EOF
+# Note that EOF **MUST** be quoted here to avoid problems with bash
+# trying to expand the variables
+$BINARY > minishell.out <<'EOF'
 echo ${TEST_VAR}
 echo "Sillythings"${MISSING_VAR}"nstuff"
 ${TRYING} "to expand a command"
-echo "${not an env expansion}"
+aecho "${not an env expansion}"
 EOF
 
 MSH_RET=$?
@@ -19,10 +21,14 @@ diff -u .env.diff minishell.out
 
 RET=$?
 
+rm minishell.out
+
 if [ $MSH_RET != 0 ]
 then
     exit 1
 fi
+
+exit $RET
 
 # Local Variables:
 # mode: shell-script
