@@ -29,7 +29,6 @@ let try_all prog args channels =
     in
 
     match args with
-    | [] -> printf "\n"; 0
     | "-n" :: [] -> 0
     | "-n" :: args  -> print args ""  ; 0
     | args          -> print args "\n"; 0
