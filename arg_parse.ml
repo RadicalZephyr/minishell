@@ -80,7 +80,8 @@ let process line =
                 replace_with_substring_from_index_to_char fn (i+2) char in
               append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
-              split accum buffer endi endi
+              let next = (endi+1) in
+              split accum buffer next next
          end
       | _ ->
          split accum buffer start (i+1)
