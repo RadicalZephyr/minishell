@@ -1,5 +1,8 @@
 open Core.Std
 
+type skip =
+  | Skip of int
+
 let process line =
 
   let rec skip_blanks i =
@@ -14,11 +17,13 @@ let process line =
   let get_replacement_for char =
     match char with
     | '{' ->
-       Some ('}', (fun (str) -> match Sys.getenv (String.drop_prefix str 1) with
-                                | None -> ""
-                                | Some var -> var))
+       Some ('}', Skip 1,
+             (fun (str) -> match Sys.getenv str with
+                           | None -> ""
+                           | Some var -> var))
     | '$' ->
-       Some ('$', (fun (_) -> Pid.to_string (Unix.getpid ())))
+       Some ('$', Skip 0,
+             (fun (_) -> Pid.to_string (Unix.getpid ())))
     | _ -> None
   in
 
@@ -67,9 +72,9 @@ let process line =
            | None ->
               split accum buffer start (i+1)
 
-           | Some (char, fn) ->
+           | Some (char, Skip n, fn) ->
               let (endi, replacement) =
-                replace_with_substring_from_index_to_char fn (i+1) char in
+                replace_with_substring_from_index_to_char fn (i+n+1) char in
               append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
               let next = (endi+1) in
