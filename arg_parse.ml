@@ -21,6 +21,21 @@ let process line =
     String.index_from_exn line i char
   in
 
+  let get_replacement_for char =
+    match char with
+    | '{' ->
+       Some ('}', (fun (str) -> match Sys.getenv str with
+                                | None -> ""
+                                | Some var -> var))
+    | _ -> None
+  in
+
+  let replace_with_substring_from_index_to_char fn start end_char =
+    let endi = find_char start end_char in
+    let replacement = fn (String.sub line ~pos:start ~len:((endi-1)-start)) in
+    (endi, replacement)
+  in
+
   let rec split accum buffer start i =
     let append_to_buffer first last =
       Buffer.add_substring buffer line first (last-first)
@@ -51,6 +66,19 @@ let process line =
          (* ... and reset the start pointer to after both strings *)
          split accum buffer (j+1) (j+1)
 
+      (* Process expansions *)
+      | '$' ->
+         begin
+           match get_replacement_for (line.[i+1]) with
+           | None ->
+              split accum buffer start (i+1)
+
+           | Some (char, fn) ->
+              let (endi, replacement) =
+                replace_with_substring_from_index_to_char fn (i+2) char in
+              Buffer.add_string buffer replacement;
+              split accum buffer start endi
+         end
       | _ ->
          split accum buffer start (i+1)
   in
