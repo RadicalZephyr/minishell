@@ -14,7 +14,7 @@ let process line =
   let get_replacement_for char =
     match char with
     | '{' ->
-       Some ('}', (fun (str) -> match Sys.getenv str with
+       Some ('}', (fun (str) -> match Sys.getenv (String.drop_prefix str 1) with
                                 | None -> ""
                                 | Some var -> var))
     | '$' ->
