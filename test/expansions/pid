@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+# How do I actually test the $$ command?
+$BINARY > minishell.out 2> /dev/null < .pid-commands &
+echo $! > pid.diff
+
+MSH_RET=$?
+
+diff -u pid.diff minishell.out
+
+RET=$?
+
+# Cleanup testing files
+rm minishell.out pid.diff
+
+# Check shell return code
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
+
+# Else check diff return code
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
