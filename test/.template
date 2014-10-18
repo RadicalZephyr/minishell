@@ -7,10 +7,21 @@ EOF
 
 MSH_RET=$?
 
+diff -u .diff minishell.out
+
+RET=$?
+
+# Cleanup testing files
+rm minishell.out
+
+# Check shell return code
 if [ $MSH_RET != 0 ]
 then
     exit 1
 fi
+
+# Else check diff return code
+exit $RET
 
 # Local Variables:
 # mode: shell-script
