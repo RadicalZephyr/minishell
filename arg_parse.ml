@@ -27,6 +27,8 @@ let process line =
        Some ('}', (fun (str) -> match Sys.getenv str with
                                 | None -> ""
                                 | Some var -> var))
+    | '$' ->
+       Some ('$', (fun (_) -> Pid.to_string (Unix.getpid ())))
     | _ -> None
   in
 
