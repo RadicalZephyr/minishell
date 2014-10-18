@@ -38,7 +38,9 @@ let process line =
 
   let rec split accum buffer start i =
     let append_to_buffer first last =
-      Buffer.add_substring buffer line first (last-first)
+      if last >= first then
+        Buffer.add_substring buffer line first (last-first)
+      else ()
     in
 
     if i >= String.length line then begin
@@ -76,8 +78,9 @@ let process line =
            | Some (char, fn) ->
               let (endi, replacement) =
                 replace_with_substring_from_index_to_char fn (i+2) char in
+              append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
-              split accum buffer start endi
+              split accum buffer endi endi
          end
       | _ ->
          split accum buffer start (i+1)
