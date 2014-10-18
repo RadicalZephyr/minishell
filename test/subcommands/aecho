@@ -18,6 +18,8 @@ diff -u .aecho.diff minishell.out
 
 RET=$?
 
+rm minishell.out
+
 if [ $MSH_RET != 0 ]
 then
     exit 1
