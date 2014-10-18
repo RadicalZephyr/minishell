@@ -53,11 +53,29 @@ let try_all prog args channels =
        0
   in
 
+  let cd args =
+    let cd_to dir =
+      match Sys.is_directory dir with
+      | `No | `Unknown -> failwith (sprintf "%s is not a directory" dir)
+      | `Yes -> Sys.chdir dir
+    in
+    match args with
+    | [] ->
+       begin
+         match Sys.getenv "HOME" with
+         | None -> failwith "HOME is not set in the environment"
+         | Some home -> cd_to home; 0
+       end
+    | dir :: _ -> cd_to dir; 0
+  in
 
-  let builtins = [{ name = "exit";     fn = exit_fn};
-                  { name = "aecho";    fn = aecho};
-                  { name = "envset";   fn = envset};
-                  { name = "envunset"; fn = envunset}]
+
+
+  let builtins = [{ name = "exit"    ; fn = exit_fn };
+                  { name = "aecho"   ; fn = aecho   };
+                  { name = "envset"  ; fn = envset  };
+                  { name = "envunset"; fn = envunset};
+                  { name = "cd"      ; fn = cd      }]
   in
   match args with
   | [] -> assert false
