@@ -6,6 +6,7 @@ $BINARY > minishell.out 2> /dev/null <<EOF
 aecho
 aecho -n "thing"
 aecho stuff
+aecho -n
 aecho a b c d e
 aecho -n a"  "b c d
 aecho last
