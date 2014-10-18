@@ -72,6 +72,9 @@ let process line =
            | None ->
               split accum buffer start (i+1)
 
+           (* Search for char in the line after current point, then
+                    pass the resulting substring, skipping the first n
+                    characters, to the function fn *)
            | Some (char, Skip n, fn) ->
               let (endi, replacement) =
                 replace_with_substring_from_index_to_char fn (i+n+1) char in
