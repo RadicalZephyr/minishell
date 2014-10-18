@@ -32,7 +32,7 @@ let process line =
 
   let replace_with_substring_from_index_to_char fn start end_char =
     let endi = find_char start end_char in
-    let replacement = fn (String.sub line ~pos:start ~len:((endi-1)-start)) in
+    let replacement = fn (String.sub line ~pos:start ~len:(endi-start)) in
     (endi, replacement)
   in
 
