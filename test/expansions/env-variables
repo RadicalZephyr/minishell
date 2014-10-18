@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+export TEST_VAR="Hello things"
+export TRYING="echo"
+unset MISSING_VAR
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+echo ${TEST_VAR}
+echo "Sillythings"${MISSING_VAR}"nstuff"
+${TRYING} "to expand a command"
+echo "${not an env expansion}"
+EOF
+
+MSH_RET=$?
+
+diff -u .env.diff minishell.out
+
+RET=$?
+
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
