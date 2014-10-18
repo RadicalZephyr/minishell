@@ -23,25 +23,16 @@ let try_all prog args channels =
   in
 
   let aecho args =
-    let rec build_string accum args =
-      match args with
-      | [] -> Buffer.contents accum
-      | hd :: tl ->
-         Buffer.add_char accum ' ';
-         Buffer.add_string accum hd;
-         build_string accum tl
-    in
-
-    let print hd tl terminal =
-      fprintf channels.out_ch "%s%s%s%!"
-              hd (build_string (Buffer.create 15) tl) terminal
+    let print hd terminal =
+      fprintf channels.out_ch "%s%s%!"
+              (String.concat hd ~sep:" ") terminal
     in
 
     match args with
     | [] -> printf "\n"; 0
     | "-n" :: [] -> 0
-    | "-n" :: hd :: tl -> print hd tl ""  ; 0
-    | hd :: tl         -> print hd tl "\n"; 0
+    | "-n" :: args  -> print args ""  ; 0
+    | args          -> print args "\n"; 0
   in
 
   let envset args =
