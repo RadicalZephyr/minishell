@@ -17,10 +17,8 @@ let process line =
     else i
   in
 
-  let rec find_quote i =
-    if i > String.length line then failwith "No ending quote found."
-    else if line.[i] = '"' then i
-    else find_quote (i+1)
+  let find_char i char =
+    String.index_from_exn line i char
   in
 
   let rec split accum buffer start i =
@@ -43,7 +41,7 @@ let process line =
          split ((Buffer.contents buffer) :: accum) (Buffer.create 10) j j
 
       | '"' ->
-         let j = find_quote (i+1) in
+         let j = find_char (i+1) '"' in
          (* Copy the arg up to the starting quote *)
          append_to_buffer start i;
 
