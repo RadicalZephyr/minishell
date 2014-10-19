@@ -2,18 +2,24 @@
 
 source ../.defaults
 
-# How do I actually test the $$ command?
-$BINARY > minishell.out 2> /dev/null < .pid-commands &
-echo $! > pid.diff
+OUTFILE=minishell.out
+CMPFILE=pid.diff
 
+# How do I actually test the $$ command?
+$BINARY > $OUTFILE 2> /dev/null < .pid-commands &
+
+PID=$!
+echo $PID > $CMPFILE
+
+wait $PID
 MSH_RET=$?
 
-diff -u pid.diff minishell.out
+diff -u $CMPFILE $OUTFILE
 
 RET=$?
 
 # Cleanup testing files
-rm minishell.out pid.diff
+rm $OUTFILE $CMPFILE
 
 # Check shell return code
 if [ $MSH_RET != 0 ]
