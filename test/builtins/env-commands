@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+unset TEST
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+echo ${TEST}
+envset TEST "a thing"
+echo ${TEST} to do
+envunset TEST
+echo ${TEST}
+echo Success!
+EOF
+
+MSH_RET=$?
+
+diff -u .env.diff minishell.out
+
+RET=$?
+
+# Cleanup testing files
+rm minishell.out
+
+# Check shell return code
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
+
+# Else check diff return code
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
