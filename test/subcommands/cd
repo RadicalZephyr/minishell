@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+$BINARY > minishell.out 2> /dev/null <<EOF
+    pwd
+    cd ../
+    pwd
+    cd
+    pwd
+EOF
+
+MSH_RET=$?
+
+(
+    pwd
+    cd ../
+    pwd
+    cd
+    pwd
+) > cd.diff
+
+diff -u cd.diff minishell.out
+
+RET=$?
+
+# Cleanup testing files
+rm minishell.out cd.diff
+
+# Check shell return code
+if [ $MSH_RET != 0 ]
+then
+    exit 1
+fi
+
+# Else check diff return code
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
