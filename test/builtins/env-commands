@@ -4,7 +4,7 @@ source ../.defaults
 
 unset TEST
 
-$BINARY > minishell.out 2> /dev/null <<EOF
+$BINARY > minishell.out 2> /dev/null <<'EOF'
 echo ${TEST}
 envset TEST "a thing"
 echo ${TEST} to do
