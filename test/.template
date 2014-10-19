@@ -2,17 +2,21 @@
 
 source ../.defaults
 
-$BINARY > minishell.out 2> /dev/null <<EOF
+OUTFILE=minishell.out
+CMPFILE=
+
+# Unquote EOF if bash variable interpolation is required
+$BINARY > $OUTFILE 2> /dev/null <<'EOF'
 EOF
 
 MSH_RET=$?
 
-diff -u .diff minishell.out
+diff -u $CMPFILE $OUTFILE
 
 RET=$?
 
 # Cleanup testing files
-rm minishell.out
+rm $OUTFILE $CMPFILE
 
 # Check shell return code
 if [ $MSH_RET != 0 ]
