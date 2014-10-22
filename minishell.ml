@@ -23,16 +23,17 @@ let process_line line =
            | Unix_error (err, _, _) ->
               Out_channel.output_string Out_channel.stderr (error_message err)
 
-let rec prompt () =
+let rec prompt in_chan =
   Out_channel.output_string stderr "% ";
   Out_channel.flush stderr;
 
-  match (In_channel.input_line stdin) with
+  match (In_channel.input_line in_chan) with
   | None -> ()
   | Some line ->
      process_line line;
-     prompt ()
+     prompt in_chan
 
 (* Launch the prompt function as main *)
 let () =
-  prompt ()
+  if (Array.length Sys.argv) = 1 then prompt stdin
+  else In_channel.with_file Sys.argv.(1) ~f:prompt
