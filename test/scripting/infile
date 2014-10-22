@@ -5,8 +5,10 @@ source ../.defaults
 OUTFILE=minishell.out
 CMPFILE=.infile.diff
 
-# Unquote EOF if bash variable interpolation is required
-$BINARY > $OUTFILE 2> /dev/null .infile.sh
+# Unquote EOF if bash variable interpolation is required This
+# intentionally puts stderr to the same file.  Now prompts being
+# printed is an error
+$BINARY > $OUTFILE 2> $OUTFILE .infile.sh
 
 MSH_RET=$?
 
