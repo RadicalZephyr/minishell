@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+source ../.defaults
+
+OUTFILE=minishell.out
+CMPFILE=.test.diff
+
+# Unquote EOF if bash variable interpolation is required
+$BINARY > $OUTFILE 2> /dev/null <<'EOF'
+echo $0
+EOF
+
+MSH_RET=$?
+
+echo > $CMPFILE $BINARY
+
+diff -u $CMPFILE $OUTFILE
+
+RET=$?
+
+# Cleanup testing files
+rm $OUTFILE $CMPFILE
+
+# Check shell return code
+if [ $MSH_RET != 0 ]
+then
+    echo "Minishell exited with code $MSH_RET"
+    exit 1
+fi
+
+# Else check diff return code
+exit $RET
+
+# Local Variables:
+# mode: shell-script
+# prelude-clean-whitespace-on-save: nil
+# End:
