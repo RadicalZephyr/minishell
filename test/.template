@@ -21,6 +21,7 @@ rm $OUTFILE $CMPFILE
 # Check shell return code
 if [ $MSH_RET != 0 ]
 then
+    echo "Minishell exited with code $MSH_RET"
     exit 1
 fi
 
