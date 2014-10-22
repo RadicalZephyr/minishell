@@ -45,8 +45,7 @@ let process line =
        if should_error then
          failwith "Could not find an ending character for match."
        else
-         let endi = (String.length line)-1 in
-         return_replacement endi
+         return_replacement (String.length line)
     | Some endi ->
        return_replacement endi
   in
