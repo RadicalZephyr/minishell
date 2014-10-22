@@ -17,20 +17,26 @@ let process line =
   let get_replacement_for char =
     match char with
     | '{' ->
-       Some ('}', Skip 1,
+       Some ((Char.equal '}'), Skip 1,
              (fun (str) -> match Sys.getenv str with
                            | None -> ""
                            | Some var -> var))
     | '$' ->
-       Some ('$', Skip 0,
+       Some ((Char.equal '$'), Skip 0,
              (fun (_) -> Pid.to_string (Unix.getpid ())))
     | _ -> None
   in
 
-  let replace_with_substring_from_index_to_char fn start end_char =
-    let endi = find_char start end_char in
-    let replacement = fn (String.sub line ~pos:start ~len:(endi-start)) in
-    (endi, replacement)
+  let char_equal_in_line fn _ char =
+    fn char
+  in
+
+  let replace_with_substring_from_index_to_char fn start char_match =
+    match String.lfindi ~pos:start line ~f:char_match with
+    | None -> failwith "Could not find an ending character for match."
+    | Some endi ->
+       let replacement = fn (String.sub line ~pos:start ~len:(endi-start)) in
+       (endi, replacement)
   in
 
   let rec split accum buffer start i =
@@ -75,9 +81,11 @@ let process line =
            (* Search for char in the line after current point, then
                     pass the resulting substring, skipping the first n
                     characters, to the function fn *)
-           | Some (char, Skip n, fn) ->
+           | Some (char_match, Skip n, fn) ->
               let (endi, replacement) =
-                replace_with_substring_from_index_to_char fn (i+n+1) char in
+                replace_with_substring_from_index_to_char
+                  fn (i+n+1) (char_equal_in_line char_match)
+              in
               append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
               let next = (endi+1) in
