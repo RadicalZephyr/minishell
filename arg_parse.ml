@@ -20,10 +20,13 @@ let process line =
        Some ((Char.equal '}'), Skip 1,
              (fun (str) -> match Sys.getenv str with
                            | None -> ""
-                           | Some var -> var))
+                           | Some var -> var), true)
     | '$' ->
        Some ((Char.equal '$'), Skip 0,
-             (fun (_) -> Pid.to_string (Unix.getpid ())))
+             (fun (_) -> Pid.to_string (Unix.getpid ())), false)
+    | '0' .. '9' ->
+       Some ((fun (c) -> not (Char.is_digit c)), Skip 0,
+             (fun (num) -> Sys.argv.(Int.of_string num)), false)
     | _ -> None
   in
 
@@ -31,12 +34,21 @@ let process line =
     fn char
   in
 
-  let replace_with_substring_from_index_to_char fn start char_match =
+  let replace_with_substring_from_index_to_char fn start char_match should_error =
+    let return_replacement index =
+      let replacement = fn (String.sub line ~pos:start ~len:(index-start)) in
+      (index, replacement)
+    in
+
     match String.lfindi ~pos:start line ~f:char_match with
-    | None -> failwith "Could not find an ending character for match."
+    | None ->
+       if should_error then
+         failwith "Could not find an ending character for match."
+       else
+         let endi = (String.length line)-1 in
+         return_replacement endi
     | Some endi ->
-       let replacement = fn (String.sub line ~pos:start ~len:(endi-start)) in
-       (endi, replacement)
+       return_replacement endi
   in
 
   let rec split accum buffer start i =
@@ -81,10 +93,10 @@ let process line =
            (* Search for char in the line after current point, then
                     pass the resulting substring, skipping the first n
                     characters, to the function fn *)
-           | Some (char_match, Skip n, fn) ->
+           | Some (char_match, Skip n, fn, should_error) ->
               let (endi, replacement) =
                 replace_with_substring_from_index_to_char
-                  fn (i+n+1) (char_equal_in_line char_match)
+                  fn (i+n+1) (char_equal_in_line char_match) should_error
               in
               append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
