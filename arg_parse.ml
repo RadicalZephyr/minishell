@@ -1,7 +1,10 @@
 open Core.Std
 
-type skip =
-  | Skip of int
+type skipf =
+  | Skip_first of int
+
+type skipl =
+  | Skip_last of int
 
 let process line =
 
@@ -17,15 +20,15 @@ let process line =
   let get_replacement_for char =
     match char with
     | '{' ->
-       Some ((Char.equal '}'), Skip 1,
+       Some ((Char.equal '}'), Skip_first 1, Skip_last 1,
              (fun (str) -> match Sys.getenv str with
                            | None -> ""
                            | Some var -> var), true)
     | '$' ->
-       Some ((Char.equal '$'), Skip 0,
+       Some ((Char.equal '$'), Skip_first 0, Skip_last 1,
              (fun (_) -> Pid.to_string (Unix.getpid ())), false)
     | '0' .. '9' ->
-       Some ((fun (c) -> not (Char.is_digit c)), Skip 0,
+       Some ((fun (c) -> not (Char.is_digit c)), Skip_first 0, Skip_last 0,
              (fun (num) -> Shell_args.get (Int.of_string num)), false)
     | _ -> None
   in
@@ -92,14 +95,14 @@ let process line =
            (* Search for char in the line after current point, then
                     pass the resulting substring, skipping the first n
                     characters, to the function fn *)
-           | Some (char_match, Skip n, fn, should_error) ->
+           | Some (char_match, Skip_first n, Skip_last m, fn, should_error) ->
               let (endi, replacement) =
                 replace_with_substring_from_index_to_char
                   fn (i+n+1) (char_equal_in_line char_match) should_error
               in
               append_to_buffer start (i-1);
               Buffer.add_string buffer replacement;
-              let next = (endi+1) in
+              let next = (endi+m) in
               split accum buffer next next
          end
       | _ ->
