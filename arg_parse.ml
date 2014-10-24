@@ -52,7 +52,7 @@ let process line =
 
   let rec split accum buffer start i =
     let append_to_buffer first last =
-      if last >= first && (String.length line) > last then
+      if last >= first && (String.length line) >= last then
         Buffer.add_substring buffer line first (last-first)
       else ()
     in
