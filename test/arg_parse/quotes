@@ -2,7 +2,10 @@
 
 source ../.defaults
 
-$BINARY > minishell.out 2> /dev/null <<EOF
+OUTFILE=minishell.out
+ERRFILE=err.txt
+
+$BINARY > $OUTFILE 2> $ERRFILE <<EOF
 echo "Stuff happens here"
 echo harder" stuff and things"
 echo "other stuff and things"  
@@ -12,11 +15,15 @@ EOF
 
 MSH_RET=$?
 
-diff -u .quotes.diff minishell.out
+diff -u .quotes.diff $OUTFILE
 
 RET=$?
 
-rm minishell.out
+echo "Error output:"
+cat $ERRFILE
+
+# Cleanup testing files
+rm $OUTFILE $ERRFILE
 
 if [ $MSH_RET != 0 ]
 then

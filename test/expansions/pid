@@ -4,9 +4,10 @@ source ../.defaults
 
 OUTFILE=minishell.out
 CMPFILE=pid.diff
+ERRFILE=err.txt
 
 # How do I actually test the $$ command?
-$BINARY > $OUTFILE 2> /dev/null < .pid-commands &
+$BINARY > $OUTFILE 2> $ERRFILE < .pid-commands &
 
 PID=$!
 echo $PID > $CMPFILE
@@ -18,8 +19,11 @@ diff -u $CMPFILE $OUTFILE
 
 RET=$?
 
+echo "Error output:"
+cat $ERRFILE
+
 # Cleanup testing files
-rm $OUTFILE $CMPFILE
+rm $OUTFILE $CMPFILE $ERRFILE
 
 # Check shell return code
 if [ $MSH_RET != 0 ]

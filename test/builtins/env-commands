@@ -4,7 +4,10 @@ source ../.defaults
 
 unset TEST
 
-$BINARY > minishell.out 2> /dev/null <<'EOF'
+OUTFILE=minishell.out
+ERRFILE=err.txt
+
+$BINARY > $OUTFILE 2> $ERRFILE <<'EOF'
 echo ${TEST}
 envset TEST "a thing"
 echo ${TEST} to do
@@ -15,12 +18,15 @@ EOF
 
 MSH_RET=$?
 
-diff -u .env.diff minishell.out
+diff -u .env.diff $OUTFILE
 
 RET=$?
 
+echo "Error output:"
+cat $ERRFILE
+
 # Cleanup testing files
-rm minishell.out
+rm $OUTFILE $ERRFILE
 
 # Check shell return code
 if [ $MSH_RET != 0 ]
