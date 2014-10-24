@@ -26,7 +26,7 @@ let process line =
              (fun (_) -> Pid.to_string (Unix.getpid ())), false)
     | '0' .. '9' ->
        Some ((fun (c) -> not (Char.is_digit c)), Skip 0,
-             (fun (num) -> Sys.argv.(Int.of_string num)), false)
+             (fun (num) -> Shell_args.get (Int.of_string num)), false)
     | _ -> None
   in
 

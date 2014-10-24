@@ -40,4 +40,9 @@ let prompt ?(do_prompt=true) in_chan =
 (* Launch the prompt function as main *)
 let () =
   if (Array.length Sys.argv) = 1 then prompt stdin
-  else In_channel.with_file Sys.argv.(1) ~f:(prompt ~do_prompt:false)
+  else
+    begin
+      (* Shift off the minishell as the invoked program ($0) *)
+      Shell_args.shift 1;
+      In_channel.with_file Sys.argv.(1) ~f:(prompt ~do_prompt:false)
+    end
