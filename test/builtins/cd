@@ -4,6 +4,7 @@ source ../.defaults
 
 OUTFILE=minishell.out
 ERRFILE=err.txt
+CMPFILE=cd.diff
 
 $BINARY > $OUTFILE 2> $ERRFILE <<EOF
     pwd
@@ -21,7 +22,7 @@ MSH_RET=$?
     pwd
     cd
     pwd
-) > cd.diff
+) > $CMPFILE
 
 diff -u cd.diff $OUTFILE
 
@@ -31,7 +32,7 @@ echo "Error output:"
 cat $ERRFILE
 
 # Cleanup testing files
-rm $OUTFILE $ERRFILE
+rm $OUTFILE $CMPFILE $ERRFILE
 
 # Check shell return code
 if [ $MSH_RET != 0 ]
