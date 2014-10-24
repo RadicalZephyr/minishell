@@ -35,7 +35,7 @@ let process line =
   in
 
   let replace_with_substring_from_index_to_char fn start char_match should_error =
-    let return_replacement index =
+    let replacement_of_index index =
       let replacement = fn (String.sub line ~pos:start ~len:(index-start)) in
       (index, replacement)
     in
@@ -45,9 +45,9 @@ let process line =
        if should_error then
          failwith "Could not find an ending character for match."
        else
-         return_replacement (String.length line)
+         replacement_of_index (String.length line)
     | Some endi ->
-       return_replacement endi
+       replacement_of_index endi
   in
 
   let rec split accum buffer start i =
