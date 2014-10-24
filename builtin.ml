@@ -37,7 +37,7 @@ let try_all prog args channels =
   let envset args =
     match args with
     (* zero or one arguments is an error *)
-    | [] | _ :: [] -> failwith "too few arguments"
+    | [] | _ :: [] -> failwith "envset: too few arguments"
     | key :: data :: _ ->
        Unix.putenv ~key ~data;
        0
@@ -46,7 +46,7 @@ let try_all prog args channels =
   let envunset args =
     match args with
       (* zero arguments is an error *)
-    | [] -> failwith "too few arguments"
+    | [] -> failwith "envunset: too few arguments"
     | name :: _ ->
        Unix.unsetenv name;
        0
@@ -55,14 +55,14 @@ let try_all prog args channels =
   let cd args =
     let cd_to dir =
       match Sys.is_directory dir with
-      | `No | `Unknown -> failwith (sprintf "%s is not a directory" dir)
+      | `No | `Unknown -> failwith (sprintf "cd: %s is not a directory" dir)
       | `Yes -> Sys.chdir dir
     in
     match args with
     | [] ->
        begin
          match Sys.getenv "HOME" with
-         | None -> failwith "HOME is not set in the environment"
+         | None -> failwith "cd: HOME is not set in the environment"
          | Some home -> cd_to home; 0
        end
     | dir :: _ -> cd_to dir; 0
