@@ -5,8 +5,10 @@ source ../.defaults
 OUTFILE=minishell.out
 CMPFILE=
 
+ERRFILE=err.txt
+
 # Unquote EOF if bash variable interpolation is required
-$BINARY > $OUTFILE 2> /dev/null <<'EOF'
+$BINARY > $OUTFILE 2> $ERRFILE <<'EOF'
 EOF
 
 MSH_RET=$?
@@ -15,8 +17,11 @@ diff -u $CMPFILE $OUTFILE
 
 RET=$?
 
+echo "Error output:"
+cat $ERRFILE
+
 # Cleanup testing files
-rm $OUTFILE $CMPFILE
+rm $OUTFILE $CMPFILE $ERRFILE
 
 # Check shell return code
 if [ $MSH_RET != 0 ]
