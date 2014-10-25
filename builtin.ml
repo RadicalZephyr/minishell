@@ -68,13 +68,37 @@ let try_all prog args channels =
     | dir :: _ -> cd_to dir; 0
   in
 
+  let shift args =
+    match args with
+    | [] -> Shell_args.shift 1; 0
+    | nstr :: _ ->
+       begin
+         match Option.try_with (fun () -> Int.of_string nstr) with
+         | None -> failwith (sprintf "shift: '%s' is not a number" nstr)
+         | Some n -> Shell_args.shift n; 0
+       end
+  in
+
+  let unshift args =
+    match args with
+    | [] -> Shell_args.clear (); 0
+    | nstr :: _ ->
+       begin
+         match Option.try_with (fun () -> Int.of_string nstr) with
+         | None -> failwith (sprintf "unshift: '%s' is not a number" nstr)
+         | Some n -> Shell_args.unshift n; 0
+       end
+
+  in
 
 
   let builtins = [{ name = "exit"    ; fn = exit_fn };
                   { name = "aecho"   ; fn = aecho   };
                   { name = "envset"  ; fn = envset  };
                   { name = "envunset"; fn = envunset};
-                  { name = "cd"      ; fn = cd      }]
+                  { name = "cd"      ; fn = cd      };
+                  { name = "shift"   ; fn = shift   };
+                  { name = "unshift" ; fn = unshift }]
   in
   List.find_map builtins ~f:(fun ({name; fn}) ->
                              if prog = name then Some (fn args)
