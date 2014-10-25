@@ -1,3 +1,6 @@
+(** Set the basic unalterable offset of the args *)
+val set_prog_index : int -> unit
+
 (** Shift all arguments n indices to the left *)
 val shift : int -> unit
 

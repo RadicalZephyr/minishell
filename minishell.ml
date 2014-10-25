@@ -42,7 +42,7 @@ let () =
   if (Array.length Sys.argv) = 1 then prompt stdin
   else
     begin
-      (* Shift off the minishell as the invoked program ($0) *)
-      Shell_args.shift 1;
+      (* Permanently ignore the msh argument for purposes of arguments *)
+      Shell_args.set_prog_index 1;
       In_channel.with_file Sys.argv.(1) ~f:(prompt ~do_prompt:false)
     end
