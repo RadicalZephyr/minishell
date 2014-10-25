@@ -60,11 +60,14 @@ let process line =
       else ()
     in
 
+    let append_arg_from_buffer accum buffer =
+      if Buffer.length buffer = 0 then accum
+      else (Buffer.contents buffer) :: accum
+    in
+
     if i >= String.length line then begin
         append_to_buffer start i;
-        let arg = Buffer.contents buffer in
-        if String.length arg = 0 then accum
-        else arg :: accum
+        append_arg_from_buffer accum buffer
       end
     else
       match line.[i] with
@@ -72,7 +75,7 @@ let process line =
          let j = skip_blanks i in
 
          append_to_buffer start i;
-         split ((Buffer.contents buffer) :: accum) (Buffer.create 10) j j
+         split (append_arg_from_buffer accum buffer) (Buffer.create 10) j j
 
       | '"' ->
          let j = find_char (i+1) '"' in
