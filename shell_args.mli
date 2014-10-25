@@ -4,6 +4,9 @@ val shift : int -> unit
 (** Shift all arguments n indices to the right *)
 val unshift : int -> unit
 
+(** Clear present shift completely *)
+val clear : unit -> unit
+
 (** Get the current count of arguments, respecting shifts *)
 val count : unit -> int
 

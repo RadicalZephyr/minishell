@@ -18,6 +18,9 @@ let shift n =
 let unshift n =
   args.offset <- args.offset - n
 
+let clear () =
+  args.offset <- 0
+
 let count () =
   args.argc - args.offset
 
