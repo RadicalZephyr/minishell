@@ -8,7 +8,7 @@ CMPFILE=.fileargs.diff
 ERRFILE=err.txt
 
 # Unquote EOF if bash variable interpolation is required
-$BINARY > $OUTFILE 2> $ERRFILE .fileargs.sh a b c
+$BINARY > $OUTFILE 2> $ERRFILE .fileargs.sh a b c d
 
 MSH_RET=$?
 
