@@ -27,6 +27,9 @@ let process line =
     | '$' ->
        Some ((Char.equal '$'), Skip_first 0, Skip_last 1,
              (fun (_) -> Pid.to_string (Unix.getpid ())), false)
+    | '#' ->
+       Some ((Char.equal '#'), Skip_first 0, Skip_last 1,
+             (fun (_) -> Int.to_string (Shell_args.count ())), false)
     | '0' .. '9' ->
        Some ((fun (c) -> not (Char.is_digit c)), Skip_first 0, Skip_last 0,
              (fun (num) -> Shell_args.get (Int.of_string num)), false)
