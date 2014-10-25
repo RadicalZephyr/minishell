@@ -68,27 +68,26 @@ let try_all prog args channels =
     | dir :: _ -> cd_to dir; 0
   in
 
-  let shift args =
-    match args with
-    | [] -> Shell_args.shift 1; 0
-    | nstr :: _ ->
-       begin
-         match Option.try_with (fun () -> Int.of_string nstr) with
-         | None -> failwith (sprintf "shift: '%s' is not a number" nstr)
-         | Some n -> Shell_args.shift n; 0
-       end
+  let with_num_arg default_fn n_fn name =
+    begin
+      fun (args) ->
+      match args with
+      | [] -> default_fn (); 0
+      | nstr :: _ ->
+         begin
+           match Option.try_with (fun () -> Int.of_string nstr) with
+           | None -> failwith (sprintf "%s: '%s' is not a number" name nstr)
+           | Some n -> n_fn n; 0
+         end
+    end
   in
 
-  let unshift args =
-    match args with
-    | [] -> Shell_args.clear (); 0
-    | nstr :: _ ->
-       begin
-         match Option.try_with (fun () -> Int.of_string nstr) with
-         | None -> failwith (sprintf "unshift: '%s' is not a number" nstr)
-         | Some n -> Shell_args.unshift n; 0
-       end
+  let shift =
+    with_num_arg (fun () -> Shell_args.shift 1) Shell_args.shift "shift"
+  in
 
+  let unshift =
+    with_num_arg (fun () -> Shell_args.clear ()) Shell_args.unshift "unshift"
   in
 
 
