@@ -18,8 +18,11 @@ let shift n =
 let unshift n =
   args.offset <- args.offset - n
 
+let count () =
+  args.argc - args.offset
+
 let get index =
-  let shifted_len = args.argc - args.offset in
+  let shifted_len = count () in
   let shifted_index = index + args.offset in
   if index >= shifted_len then ""
   else args.argv.(shifted_index)
