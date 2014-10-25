@@ -21,5 +21,5 @@ let unshift n =
 let get index =
   let shifted_len = args.argc - args.offset in
   let shifted_index = index + args.offset in
-  if index > shifted_len then ""
+  if index >= shifted_len then ""
   else args.argv.(shifted_index)
