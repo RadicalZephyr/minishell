@@ -1,12 +1,12 @@
 Minishell
----------
+=========
 
 This project is based on the minishell assignment taught by [Phil Nelson][nelson]
 at Western Washington University for his Unix Programming class.
 
 
 ... in OCaml
-============
+------------
 
 The twist is that it's implemented in OCaml.
 
@@ -14,7 +14,7 @@ The twist is that it's implemented in OCaml.
 
 
 Dependencies
-============
+------------
 
 I recommend installing OCaml via [OPAM]. In particular, I followed [the
 instructions][rwoinstall] from the Real World OCaml book. At a
@@ -30,7 +30,7 @@ core_extended opam package as well.
 
 
 Building
-========
+--------
 
 This is super easy. Along with the `core` and `core_extended`
 libraries should have come a program called `corebuild`. If it's not
