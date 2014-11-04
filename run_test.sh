@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-
-opam config exec 'corebuild minishell.d.byte'
+BINARY=minishell.d.byte
+corebuild $BINARY
 
 if [[ $? != 0 ]]
 then
@@ -9,6 +9,6 @@ then
     exit 1
 fi
 
-export BINARY=$(pwd)/minishell.d.byte
+export BINARY=$PWD/$BINARY
 
 urchin test
