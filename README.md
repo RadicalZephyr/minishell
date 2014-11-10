@@ -1,6 +1,8 @@
 Minishell
 =========
 
+[![Made at Hacker School](http://img.shields.io/badge/Made_At-Hacker_School-brightgreen.svg)](http://shields.io/)
+
 This project is based on the minishell assignment taught by [Phil Nelson][nelson]
 at Western Washington University for his Unix Programming class.
 
