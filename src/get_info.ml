@@ -25,6 +25,10 @@ let () = seal struct_passwd
 let getpwuid =
   foreign "getpwuid" (uid_t @-> returning (ptr struct_passwd))
 
+let getusername uid =
+  let passwd = getpwuid uid in
+  getf (!@ passwd) pw_name
+
 
 type struct_group
 let struct_group : struct_group structure typ = structure "group"
@@ -39,3 +43,7 @@ let () = seal struct_group
  *)
 let getgrgid =
   foreign "getgrgid" (gid_t @-> returning (ptr struct_group))
+
+let getgroupname gid =
+  let group = getgrgid gid in
+  getf (!@ group) gr_name
