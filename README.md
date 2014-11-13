@@ -41,7 +41,7 @@ available on your `PATH` then you should make sure that you've done
 
 Then compiling is just:
 
-    corebuild minishell.native
+    corebuild src/minishell.native
 
 
 Alternatively you could specify `minishell.byte` as the target to

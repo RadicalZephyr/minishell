@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BINARY=minishell.d.byte
-corebuild $BINARY
+corebuild src/$BINARY
 
 if [[ $? != 0 ]]
 then
