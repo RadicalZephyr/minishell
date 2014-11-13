@@ -1,5 +1,29 @@
 open Core.Std
 
+module Exit_status : sig
+
+    val set : int -> unit
+
+    val get : unit -> int
+
+  end = struct
+
+    type t =
+      {
+        mutable last : int;
+      }
+
+    let exit_status = { last = 0 }
+
+    let set n =
+      exit_status.last <- n
+
+    let get () =
+      exit_status.last
+
+  end
+
+
 module Shell_args : sig
     (** Set the basic unalterable offset of the args *)
     val set_prog_index : int -> unit
