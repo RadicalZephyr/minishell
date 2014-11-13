@@ -9,7 +9,8 @@ let process_line line =
      match Builtin.try_all prog just_args {in_ch  = Pervasives.stdin;
                                            out_ch = Pervasives.stdout;
                                            err_ch = Pervasives.stderr} with
-     | Some _ -> ()
+     | Some exit_status ->
+        Globals.Exit_status.set exit_status
      | None ->
         match fork () with
         | `In_the_child   ->
@@ -17,8 +18,15 @@ let process_line line =
 
         | `In_the_parent cpid ->
            try
-             let _ = waitpid cpid in
-             ()
+             begin
+               match waitpid cpid with
+               | Ok () ->
+                  Globals.Exit_status.set 0
+               | Error `Exit_non_zero exit_status ->
+                  Globals.Exit_status.set exit_status
+               | Error `Signal _ ->
+                  ()
+             end
            with
            | Unix_error (err, _, _) ->
               Out_channel.output_string Out_channel.stderr (error_message err)
