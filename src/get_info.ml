@@ -23,7 +23,7 @@ let () = seal struct_passwd
     struct passwd *getpwuid(uid_t uid);
  *)
 let getpwuid =
-  foreign "getpwuid" (uid_t @-> returning (ptr struct_passwd))
+  foreign "getpwuid" (uid_t @-> returning_checking_errno (ptr struct_passwd))
 
 let getusername uid =
   let passwd = getpwuid uid in
@@ -42,7 +42,7 @@ let () = seal struct_group
    struct group *getgrgid(gid_t gid);
  *)
 let getgrgid =
-  foreign "getgrgid" (gid_t @-> returning (ptr struct_group))
+  foreign "getgrgid" (gid_t @-> returning_checking_errno (ptr struct_group))
 
 let getgroupname gid =
   let group = getgrgid gid in
