@@ -30,6 +30,9 @@ let process line =
     | '#' ->
        Some ((Char.equal '#'), Skip_first 0, Skip_last 1,
              (fun (_) -> Int.to_string (Globals.Shell_args.count ())), false)
+    | '?' ->
+       Some ((Char.equal '?'), Skip_first 0, Skip_last 1,
+            (fun (_) -> Int.to_string (Globals.Exit_status.get ())), false)
     | '0' .. '9' ->
        Some ((fun (c) -> not (Char.is_digit c)), Skip_first 0, Skip_last 0,
              (fun (num) -> Globals.Shell_args.get (Int.of_string num)), false)
