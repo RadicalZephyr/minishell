@@ -43,6 +43,6 @@ let () =
   else
     begin
       (* Permanently ignore the msh argument for purposes of arguments *)
-      Shell_args.set_prog_index 1;
+      Globals.Shell_args.set_prog_index 1;
       In_channel.with_file Sys.argv.(1) ~f:(prompt ~do_prompt:false)
     end

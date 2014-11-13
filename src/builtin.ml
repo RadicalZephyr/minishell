@@ -83,11 +83,11 @@ let try_all prog args channels =
   in
 
   let shift =
-    with_num_arg (fun () -> Shell_args.shift 1) Shell_args.shift "shift"
+    with_num_arg (fun () -> Globals.Shell_args.shift 1) Globals.Shell_args.shift "shift"
   in
 
   let unshift =
-    with_num_arg (fun () -> Shell_args.clear ()) Shell_args.unshift "unshift"
+    with_num_arg (fun () -> Globals.Shell_args.clear ()) Globals.Shell_args.unshift "unshift"
   in
 
 
