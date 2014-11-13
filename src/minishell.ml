@@ -14,7 +14,17 @@ let process_line line =
      | None ->
         match fork () with
         | `In_the_child   ->
-           never_returns (exec ~prog ~args ~use_path:true ())
+           begin
+             try
+               never_returns (exec ~prog ~args ~use_path:true ())
+             with
+             | Unix_error (err_code, component, _) ->
+                (* Set status of 127 on exec failure *)
+                fprintf Pervasives.stderr "%s: %s\n"
+                        component
+                        (error_message err_code);
+                exit 127
+           end
 
         | `In_the_parent cpid ->
            try
