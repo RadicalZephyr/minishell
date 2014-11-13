@@ -23,11 +23,15 @@ let () = seal struct_passwd
     struct passwd *getpwuid(uid_t uid);
  *)
 let getpwuid =
-  foreign "getpwuid" (uid_t @-> returning_checking_errno (ptr struct_passwd))
+  foreign "getpwuid" (uid_t @-> returning (ptr struct_passwd))
 
-let getusername uid =
+let uid_name uid =
   let passwd = getpwuid uid in
-  getf (!@ passwd) pw_name
+  let null_passwd = from_voidp struct_passwd null in
+  if (ptr_compare passwd null_passwd) = 0 then
+    getf (!@ passwd) pw_name
+  else
+    ""
 
 
 type struct_group
@@ -42,8 +46,12 @@ let () = seal struct_group
    struct group *getgrgid(gid_t gid);
  *)
 let getgrgid =
-  foreign "getgrgid" (gid_t @-> returning_checking_errno (ptr struct_group))
+  foreign "getgrgid" (gid_t @-> returning (ptr struct_group))
 
-let getgroupname gid =
+let gid_name gid =
   let group = getgrgid gid in
-  getf (!@ group) gr_name
+  let null_group = from_voidp struct_group null in
+  if (ptr_compare group null_group) = 0 then
+    getf (!@ group) gr_name
+  else
+    ""
