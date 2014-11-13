@@ -28,7 +28,10 @@ let getpwuid =
 
 type struct_group
 let struct_group : struct_group structure typ = structure "group"
-
+let gr_name   = field struct_group "gr_name"   (ptr char)
+let gr_passwd = field struct_group "gr_passwd" (ptr char)
+let gr_gid    = field struct_group "gr_gid"    gid_t
+let gr_mem    = field struct_group "gr_mem"    (ptr ptr char)
 let () = seal struct_group
 
 (*
