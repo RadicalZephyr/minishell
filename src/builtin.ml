@@ -90,6 +90,39 @@ let try_all prog args channels =
     with_num_arg (fun () -> Globals.Shell_args.clear ()) Globals.Shell_args.unshift "unshift"
   in
 
+  let sstat args =
+    let stat_file fname =
+      try
+        let stats = Unix.stat fname in
+        fprintf channels.out_ch "%s %s %s %s %s %s\n"
+                fname
+                (Get_info.uid_name stats.st_uid)
+                (Get_info.gid_name stats.st_gid)
+        (* I need getgrgid and getpwuid *)
+        0
+      with
+      | Unix.Unix_error (err_code, component, _) ->
+         fprintf channels.stderr "%s: %s\n"
+                 component
+                 (error_message err_code);
+         1
+    in
+
+    let itr args =
+      match args with
+      | [] -> 0
+      | hd :: tl ->
+         stat_file hd;
+         itr tl
+    in
+
+    match args with
+    | [] ->
+       fprintf channels.stderr "stat: missing operand\n";
+       1
+    | _ ->
+       itr args
+  in
 
   let builtins = [{ name = "exit"    ; fn = exit_fn };
                   { name = "aecho"   ; fn = aecho   };
