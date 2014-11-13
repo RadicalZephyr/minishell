@@ -45,7 +45,7 @@ let try_all prog args channels =
 
   let envunset args =
     match args with
-      (* zero arguments is an error *)
+    (* zero arguments is an error *)
     | [] -> failwith "envunset: too few arguments"
     | name :: _ ->
        Unix.unsetenv name;
