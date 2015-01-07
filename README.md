@@ -1,18 +1,18 @@
 Minishell
 =========
 
-[![Made at Hacker School](http://img.shields.io/badge/Made_At-Hacker_School-brightgreen.svg)](http://shields.io/)
+[![Made at Hacker School](http://img.shields.io/badge/Made_At-Hacker_School-brightgreen.svg)](https://www.hackerschool.com)
 
 This project is based on the minishell assignment taught by [Phil Nelson][nelson]
 at Western Washington University for his Unix Programming class.
+
+[nelson]: http://facultyweb.cs.wwu.edu/~phil/
 
 
 ... in OCaml
 ------------
 
 The twist is that it's implemented in OCaml.
-
-[nelson]: http://facultyweb.cs.wwu.edu/~phil/
 
 
 Dependencies
