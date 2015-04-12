@@ -1,7 +1,7 @@
 Minishell
 =========
 
-[![Made at Hacker School](http://img.shields.io/badge/Made_At-Hacker_School-brightgreen.svg)](https://www.hackerschool.com)
+[![Made at the Recurse Center](http://img.shields.io/badge/Made_At-The_Recurse_Center-brightgreen.svg)](https://www.recurse.com)
 
 This project is based on the minishell assignment taught by [Phil Nelson][nelson]
 at Western Washington University for his Unix Programming class.
